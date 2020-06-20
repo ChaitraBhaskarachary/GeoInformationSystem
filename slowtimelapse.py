@@ -93,4 +93,4 @@ f.close()
 shutil.move(‘metadata.txt’,’/var/www/metadata.txt’)
 
 toc=ti.time()
-print toc-tic
+print(toc-tic)
