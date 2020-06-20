@@ -1,9 +1,6 @@
 #Script 4 reads in NMEA sentences from a serial GPS device plugged into the Raspberry
 #Pi. Looks at 30 sentences and takes out GPRMC line, and then reads lat and lon and
 #time.
-# Matt Patrick
-# US Geological Survey - Hawaiian Volcano Observatory
-# Mar 20, 2014
 
 import os
 import time
@@ -13,26 +10,26 @@ import pytz
 
 def gpspull():
  print ('pulling GPS time...')
- a=os.listdir(‘/sys/bus/usb-serial/devices’)
+ a=os.listdir('/sys/bus/usb-serial/devices')
  
  #Acquire image and name file based on date-time
- os.chdir(‘/media/usb/webcam’)
- s=’head --lines=30 /dev/’+a[0]+’ > gpsinfo4.txt’
+ os.chdir('/media/usb/webcam')
+ s='head --lines=30 /dev/'+a[0]+' > gpsinfo4.txt'
  os.system(s)
  
- isactive=’nan’
- lat=’nan’
- lon=’nan’
- gpstime=’nan’
+ isactive='nan'
+ lat='nan'
+ lon='nan'
+ gpstime='nan'
  
- fh=open(‘gpsinfo4.txt’)
+ fh=open('gpsinfo4.txt')
  for line in fh.readlines():
   #print(line[1:6])
-  if line[1:6]==’GPRMC’:
-    #print(‘yes’)
-    s=re.split(‘,’,line)
+  if line[1:6]=='GPRMC':
+    #print('yes')
+    s=re.split(',',line)
     isactive=s[2]
-    if isactive==’A’:
+    if isactive=='A':
        slat=s[3]
        slat1=int(float(slat)/100)
        slat2=float(slat)-(slat1*100)
@@ -48,9 +45,9 @@ def gpspull():
        lon=str(lon)
        lon=float(lon[0:11])
        
-       if s[4]==’S’:
+       if s[4]=='S':
         lat=lat*-1
-       if s[6]==’W’:
+       if s[6]=='W':
         lon=lon*-1
       
        t1=s[1]
@@ -64,11 +61,11 @@ def gpspull():
        utc=pytz.UTC
        gpstime=dt.datetime(tyear,tmonth,tday,thour,tmin,tsec,0,utc) 
        
- if isactive==’nan’:
- gpslock=’GPS time-sync: no’
- elif isactive==’V’:
- gpslock=’GPS time-sync: no’
- elif isactive==’A’:
- gpslock=’GPS time-sync: yes’
+ if isactive=='nan':
+ gpslock='GPS time-sync: no'
+ elif isactive=='V':
+ gpslock='GPS time-sync: no'
+ elif isactive=='A':
+ gpslock='GPS time-sync: yes'
  fh.close()
  return (gpslock, lat, lon, gpstime)
