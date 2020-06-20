@@ -5,6 +5,6 @@
 import os
 from setapproxtime2 import setapproxtime
 setapproxtime()
-os.system(‘sudo service ntp stop’)
-os.system(‘sudo ntpd -q’)
-os.system(‘sudo service ntp start’)
+os.system('sudo service ntp stop')
+os.system('sudo ntpd -q')
+os.system('sudo service ntp start')
